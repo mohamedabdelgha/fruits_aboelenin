@@ -1,0 +1,132 @@
+{% load static %}
+{% load i18n %}
+{% language 'ar' %}
+{% load arabic_numbers %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static "css/main.css" %}">
+    <title>فواتير العملاء</title>
+</head>
+<body>
+    <header>
+        <div class="main">
+            <img src="{% static "images/logo.png" %}" alt="">
+            <h1>فواتير العملاء</h1>
+        </div>
+        <a href="{% url 'home' %}"><i class="fa-solid fa-arrow-left"></i></a>
+    </header>
+    <!-- تعديل عميل -->
+    <form method="post" action="{% url 'suppliersaccounts' %}" class="window" id="editsuppliercon">
+        {% csrf_token %}
+        <i id="closeeditsupplier" class="fa-solid fa-xmark close"></i>
+        <div class="inputs">
+            <input type="hidden" name="name" value="">
+            <input type="hidden" name="place" value="">
+            <input type="hidden" name="date" value="">
+            <button type="submit" class="addbtn">تعديل عميل</button>
+        </div>
+    </form>
+
+
+    <div class="todayscar">
+        <form method ="POST"  class="addcar" action="{% url "suppliersaccounts" %}">
+            {% csrf_token %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        
+            <div>
+                <input name ="name" type="text" placeholder="اسم العميل">
+                <input name = 'place' type="text" placeholder="المنطقة"  style="width: 15%;">
+                <input name="opening_balance" type="number" step="0.001" placeholder="رصيد افتتاحى" style="width: 15%;">
+                <input name = 'date' type="date" placeholder="المنظقة"  style="width: 20%;">
+            </div>
+            <button class="addbtn">اضف عميل</button>
+        </form>
+        <div class="title">
+            <h1>جميع العملاء</h1>
+        </div>
+        <div class="table">
+            <input id="searchbar" type="text" placeholder="ابحث عن العميل">
+            <table>
+                <thead>
+                    <tr>
+                        <th>اسم العميل</th>
+                        <th>التاريخ</th>
+                        <th>عدد النقلات</th>
+                        <th id="totbtn">له</th>
+                        <th>المنطقة</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tablebody">
+                    {% for sup in sup  %}
+                    <tr>
+                        <td>{{sup.name}}</td>
+                        <td>{{sup.date|date:"20y/m/d"|arabic_numbers}}</td>
+                        <td>{{sup.num_of_containers|arabic_numbers}}</td>
+                        <td style="display: none;">{{sup.balance}}</td>
+                        <td>{{sup.balance|arabic_numbers}}</td>
+                        <td>{{sup.place}}</td>
+                        <td><a href="{% url "supplierpage" sup.id %}" class="type" id="show" style='text-decoration:none;'>عرض</a></td>
+                        <td><a href="{% url "supplierupdate" sup.id %}"><button id="editsupplier" class="btn" style="color: #00F000;"><i class="fa-regular fa-pen-to-square"></i></button></a></td>
+                        <td><a href="{% url "suppliersdelete" sup.id %}" ><button id="deletecar" class="btn"  style="color: #FF0000;" ><i class="fa-solid fa-trash"></i></button></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- <script src="{% static "js/search.js" %}"></script> -->
+    <script>
+        let tablebody = document.getElementById('tablebody')
+        let searchbar = document.getElementById('searchbar')
+        searchbar.onkeyup=()=>{
+            let filter = searchbar.value.toUpperCase();
+            let tr= tablebody.getElementsByTagName('tr');
+                        for(var i=0; i<tr.length; i++){
+                            let td = tr[i].getElementsByTagName('td')[0];
+                            if(td){
+                                let txtvalue = td.textContent;
+                                if(txtvalue.toLocaleUpperCase().indexOf(filter)>-1){
+                                    tr[i].style.display='';
+                                    
+                                }else{   
+                                    tr[i].style.display='none';
+                                }
+                            }
+                        }
+        }
+        const tableBody = document.getElementById('tablebody');
+        const totbtn = document.getElementById('totbtn'); 
+        function sortByPrice(ascending) {
+        const rows = Array.from(tableBody.querySelectorAll('tr'));
+        // Clone rows to avoid DOM manipulation
+        const sortedRows = rows.slice();
+        sortedRows.sort((row1, row2) => {
+            const weight1 = parseFloat(row1.querySelectorAll('td')[3].textContent.trim());
+            const weight2 = parseFloat(row2.querySelectorAll('td')[3].textContent.trim());
+            return (weight1 - weight2) * (ascending ? 1 : -1);
+        });
+        // Clear and re-append sorted rows
+        tableBody.innerHTML = '';
+        sortedRows.forEach(row => tableBody.appendChild(row));
+        }
+        let isAscending = true;
+        totbtn.addEventListener('click', () => {
+        isAscending = !isAscending;
+        sortByPrice(isAscending);
+        });
+    </script>
+
+</body>
+</html>
+{% endlanguage %}

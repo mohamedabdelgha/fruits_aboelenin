@@ -1,0 +1,83 @@
+{% load static %}
+{% load i18n %}
+{% language 'ar' %}
+{% load arabic_numbers %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static "css/main.css" %}">
+    <title>اضف اصناف للنقلة</title>
+</head>
+<body>
+        <header>
+            <div class="main">
+                <img src="{% static "images/logo.png" %}" alt="">
+                <h1>اضف اصناف للنقلة</h1>
+            </div>
+        </header>
+        
+        <div class="window" id="" style="display: flex;">
+        <a href="{% url "addcontainer" %}" id="closekinds" class="fa-solid fa-xmark close" style='text-decoration:none;'></a>
+        <h2>اضافة اصناف للنقلة</h2>
+        
+        <form method ="POST"  class="addcar" action="{% url "containeritems" container.id %}">
+            {% csrf_token %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            <select name="item_name">
+                <option value="">أختر الصنف</option>
+                {% for item in items %}
+                    <option value="{{ item.name }}">{{ item.name }}</option>
+                {% endfor %}
+            </select>
+        <!-- <input type="text" name="item_name" id="" placeholder="اسم الصنف"> -->
+        <input type="number" name="count" step="0.01" id="" placeholder="العدد">
+        <select name="tool" id="">
+            <option value="اخر">اخر</option>
+            <option value="صناديق صغيرة">صناديق صغيرة</option>
+            <option value="صناديق كبيرة">صناديق كبيرة</option>
+        </select>
+        <input type="number" name="price" step="0.01" id="" placeholder="سعر البيع">
+        <input type="number" name="weight" step="0.01" id="" placeholder="وزن الصنف">
+        <button id="addcon">اضافة</button>
+        </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>الصنف</th>
+                <th>العدد</th>
+                <th>العددالمتبقي</th>
+                <th>العدة</th>
+                <th>السعر</th>
+                <th>وزن الصنف</th>
+                <th> اجمالي السعر</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tablebody">
+            {% for container_item in container.containeritem_set.all %}
+            <tr>
+                <td>{{ container_item.item.name }}</td>
+                <td>{{ container_item.count|arabic_numbers }}</td>
+                <td>{{ container_item.remaining_count|arabic_numbers }}</td>
+                <td>{{ container_item.tool }}</td>
+                <td>{{ container_item.price|arabic_numbers }}</td>
+                <td>{{ container_item.item_weight|arabic_numbers }} كيلو جرام </td>
+                <td>{{ container_item.total_item_price|arabic_numbers }}</td>
+                <td><a href="{% url "containeritemdelete" container_item.id %}" id="deletecar" class="btn"  style="color: #FF0000;" ><i class="fa-solid fa-trash"></i></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+{% endlanguage %}

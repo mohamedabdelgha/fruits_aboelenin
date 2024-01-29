@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static "css/main.css" %}">
+    <title>تعديل خانة فاتورة نقلة </title>
+</head>
+
+<body>
+
+    <header>
+        <div class="main">
+            <img src="{% static "images/logo.png" %}" alt="">
+            <h1>تعديـــــــل خانة فاتورة</h1>
+        </div>
+        <a href="#" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></a>
+    </header>
+
+
+    <form method="POST" action="{% url 'containerbillupdate' container_bill.id %}" class="table" id="bills" style="display:flex; margin: 10px 0px;">
+        {% csrf_token %}
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+        <h2>فاتورة النقلة</h2><br>
+        <div class="billinputs">
+            <input type="number" name="count" placeholder="العدد" required value="{{ container_bill.count }}">
+            <input type="number" name="weight" step="0.001" placeholder="الوزن" required value="{{ container_bill.weight|floatformat }}">
+            <input type="number" name="price" step="0.001" placeholder="السعر" required value="{{ container_bill.price|floatformat }}" id="priceInputBill">
+            <select name="container_item" id="kind-select" required>
+                <option value="">اختر الصنف</option>
+                {% for container_item in container_items %}
+                    <option value="{{ container_item.id }}" data-price="{{ container_item.price }}" {% if container_item.id == container_bill.container_item.id %}selected{% endif %}>{{ container_item.item.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" name="add_bill_submit">اضافة</button>
+        </div>
+    </form>
+            
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+</body>
+</html>

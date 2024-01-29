@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static "css/main.css" %}">
+    <title>الصفحة الرئيسية</title>
+</head>
+<body>
+    <header>
+        <div class="main">
+            <img src="{% static "images/logo.png" %}" alt="">
+            <h1>الصفحة الرئيسية</h1>
+        </div>
+        <div class="username">
+            <h2>مرحبـــــــًا  يا {{user.first_name}}<h2>
+                <a href="{% url "logout" %}"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+            </div>
+    </header>
+    <section class="mainpage">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <img src="{% static "" %}images/login3.png">
+    </section>
+    <section class="secpage">
+        <div class="div2">
+            <h2> <i class="fa-solid fa-people-group"></i> حسابات البائعين</h2>
+            <!-- <img src="{% static "images/photo_2023-12-25_18-17-46.jpg" %}" alt=""> -->
+            <div class="buttons">
+                <ul>
+                    <a href="{% url "profits" %}"><li>استلام نقدية <i class="fa-solid fa-arrow-left"></i></li></a>
+                    <!-- <li><a href="{% url "selleraccounts" %}">اضف بائع <i class="fa-solid fa-arrow-left"></i></a></li> -->
+                    <a href="{% url "selleraccounts" %}"><li>كشف حسابات البائعين <i class="fa-solid fa-arrow-left"></i></li></a>
+                    <a href="{% url "sellersort" %}"><li>اجمالى البائعين<i class="fa-solid fa-arrow-left"></i></li></a>
+                </ul>
+            </div>
+        </div>
+        <div class="div1">
+            <h2><i class="fa-solid fa-truck"></i>  تسجيل حركة البضاعة</h2>
+            <!-- <img src="{% static "images/photo_2023-12-25_18-17-46 (2).jpg" %}" alt=""> -->
+            <div class="buttons">
+                <ul>
+                    <a href="{% url "addcontainer" %}"><li>جميع النقلات <i class="fa-solid fa-arrow-left"></i></li></a>
+                    <a href="{% url "today" %}"><li>نقلات اليوم <i class="fa-solid fa-arrow-left"></i></li></a>
+                    <a href="{% url "remain" %}"><li>النقلات المتبقية <i class="fa-solid fa-arrow-left"></i></li></a>
+                    <a href="{% url "finished" %}"><li>النقلات المنتهية <i class="fa-solid fa-arrow-left"></i></li></a>
+                </ul>
+            </div>
+        </div>
+        <div class="div3">
+            <h2> <i class="fa-solid fa-people-roof"></i> حسابات العملاء</h2>
+            <!-- <img src="{% static "images/photo_2023-12-25_18-17-44.jpg" %}" alt=""> -->
+            <div class="buttons">
+                <ul>
+                    <a href="{% url "supplierprofits" %}"><li>صرف نقدية <i class="fa-solid fa-arrow-left"></i></li></a>
+                    <a href="{% url "suppliersaccounts" %}"><li>كشف حسابات العملاء <i class="fa-solid fa-arrow-left"></i></li></a>
+                    <a href="{% url "suppliersort" %}"><li>اجمالى العملاء <i class="fa-solid fa-arrow-left"></i></li></a>
+                </ul>
+            </div>
+        </div>
+        <div class="div5">
+            <h2> <i class="fa-solid fa-circle-plus"></i> اضافات</h2>
+            <!-- <img src="{% static "images/photo_2023-12-25_18-17-42.jpg" %}" alt=""> -->
+            <div class="buttons">
+                <ul>
+                    <a href="{% url "items" %}"><li>اضف صنف <i class="fa-solid fa-arrow-left"></i></li></a>
+                    <a href="{% url "loses" %}"><li>اضافة مصروف <i class="fa-solid fa-arrow-left"></i></li></a>
+                    <a href="{% url "daymoney" %}"><li>تقفيل اليوم <i class="fa-solid fa-arrow-left"></i></li></a>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div style="display: flex;align-items: center;">
+            <h2>TIGER TECH</h2>br
+            <img src="{% static "images/tigertech.png" %}" alt="">
+        </div>
+        <h2>Pwored By : </h2>
+        <div class="link">
+            <h2>visit us: </h2><br>
+            <a href="https://mohamedabdelgha.github.io/pyramid-tech/" target="_blank"> Tiger_tech.com </a>
+        </div>
+    </footer>
+</body>
+</html>
